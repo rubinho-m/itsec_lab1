@@ -5,8 +5,8 @@ on:
   pull_request: {}
 
 jobs:
-  spotbugs-check:
-    name: SpotBugs Static Analysis
+  code-check:
+    name: analysis
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Run SpotBugs with Gradle
+      - name: Run SpotBugs
         run: ./gradlew clean spotbugsMain
 
       - name: Upload SpotBugs report
@@ -32,3 +32,19 @@ jobs:
           name: spotbugs-report
           path: build/reports/spotbugs/
           if-no-files-found: warn
+      - name: Depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        with:
+          project: 'test'
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+          name: Depcheck report
+          path: ${{github.workspace}}/reports
