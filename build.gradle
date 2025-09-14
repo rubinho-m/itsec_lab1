@@ -5,6 +5,22 @@ plugins {
     id 'com.github.spotbugs' version '6.3.0'
 }
 
+spotbugs {
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+}
+
+spotbugsMain {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+
 group = 'com.rubinho'
 version = '0.0.1-SNAPSHOT'
 description = 'itsec_lab1'
@@ -30,6 +46,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0'
 }
 
 tasks.named('test') {
