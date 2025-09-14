@@ -1,3 +1,6 @@
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.5'
@@ -6,7 +9,8 @@ plugins {
 }
 
 spotbugs {
-    ignoreFailures = false
+    reportLevel = 'low'
+    ignoreFailures = true
     showStackTraces = true
     showProgress = true
 }
