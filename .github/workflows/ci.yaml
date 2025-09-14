@@ -38,7 +38,6 @@ jobs:
           JAVA_HOME: /opt/jdk
         id: Depcheck
         with:
-          failOnError: false
           project: 'test'
           path: '.'
           format: 'HTML'
