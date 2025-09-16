@@ -20,7 +20,7 @@
 ## Описание проекта
 
 Проект представляет собой API для простого взаимодействия (получение и добавление) с коллекцией, содержащей информацию 
-о квартирах. В REST API внедрены базовые меры защиты и настрое GitHub Actions pipeline с security-сканерами.
+о квартирах. В REST API внедрены базовые меры защиты и настроен GitHub Actions pipeline с security-сканерами.
 
 ## Описание API
 
@@ -137,6 +137,10 @@ public interface FlatRepository extends JpaRepository<Flat, Long> {
     }
 ```
 
+Демонстрация защиты от XSS:
+
+![img.png](img/xss.png)
+
 ### Как реализована аутентификация
 
 1) Приходит запрос на регистрацию/авторизацию
@@ -149,6 +153,26 @@ public interface FlatRepository extends JpaRepository<Flat, Long> {
 достает Authorization header и ищет в нем Bearer схему
 6) [UserAuthProvider](src/main/java/com/rubinho/itsec_lab1/security/UserAuthProvider.java)
    валидирует JWT-токен
+
+Доступ к защищенному api только для аутентифицированных пользователей обеспечивается аннотацией @PreAuthorize
+
+```java
+@GetMapping
+@PreAuthorize("isAuthenticated()")
+ResponseEntity<List<FlatResponseDto>> getFlats();
+```
+
+Доступ без токена отсутствует
+
+![img.png](img/accessDenied.png)
+
+Доступ по токену
+
+![img.png](img/tokenAccess.png)
+
+Доступ с просроченным токеном отсутствует 
+
+![img.png](img/expired.png)
 
 ## Отчет SAST (spotbugs)
 

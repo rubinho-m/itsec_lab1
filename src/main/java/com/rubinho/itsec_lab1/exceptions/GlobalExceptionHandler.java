@@ -1,6 +1,6 @@
 package com.rubinho.itsec_lab1.exceptions;
 
-import org.springframework.http.HttpStatus;
+import com.auth0.jwt.exceptions.TokenExpiredException;import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
-    @ExceptionHandler(value = {AccessDeniedException.class, AuthorizationDeniedException.class})
+    @ExceptionHandler(value = {AccessDeniedException.class, AuthorizationDeniedException.class, TokenExpiredException.class})
     public ResponseEntity<String> handeAccessDenied(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
